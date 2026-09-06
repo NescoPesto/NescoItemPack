@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch
 local napster = Isaac.GetItemIdByName("Napster")
 
 -- Isaac.GetItemConfig():GetCollectible(napster).AchievementID = 613
@@ -64,7 +65,6 @@ function Nesco:SpawnPickup()
             SFXManager():Play(SoundEffect.SOUND_THUMBSUP)
             player:PlayExtraAnimation("Happy")
             Isaac.Spawn(EntityType.ENTITY_PICKUP, entityVariant, entitySubType, spawnPosition, Vector(0,0), nil)
-            
         else
         SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN)
         player:PlayExtraAnimation("Sad")
