@@ -16,5 +16,5 @@ The possible pickups and their odds are spawning are:
 ### Last Supper (partially done / not in master)
 Prevents food items from spawning. \
 If playing as Judas, Dark Judas or Tainted Judas also gives a 0.5 damage up.
-### Monocle
+### Monocle (not implemented)
 Highlights tinted rocks and cracked skull
