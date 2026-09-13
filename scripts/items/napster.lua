@@ -1,13 +1,29 @@
 ---@diagnostic disable: param-type-mismatch
 local napster = Isaac.GetItemIdByName("Napster")
-
--- Isaac.GetItemConfig():GetCollectible(napster).AchievementID = 613
+local napsterUnlockAchievement = Isaac.GetAchievementIdByName("Napster")
+local SHOULD_BLOCK_POPUP = false
 
 if EID then
-    Nesco:AddCallback("EID_POST_LOAD", function()
-        EID:addCollectible(napster, "#If Isaac goes to the next floor without taking damage in the boss room, one of the following will spawn on next floor:#{{GoldenBomb}} -> 15%#{{Coin}} (Golden) -> 20%#{{GoldenHeart}} -> 15%#{{GoldenKey}} -> 20%#{{Battery}} (Mega) -> 15%#Otherwise there's a 50% chance the pickup will spawn", "Napster", "en")
+    Nesco:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
+        EID:addCollectible(napster, "#If Isaac goes to the next floor without taking damage in the boss room, one of the following will spawn on next floor:#{{GoldenBomb}} -> 15%#{{Coin}} (Golden) -> 20%#{{GoldenHeart}} -> 15%#{{GoldenKey}} -> 20%#{{Battery}} (Mega) -> 15%#{{Pill}} (Golden) -> 15%#Otherwise there's a 50% chance the pickup will spawn", "Napster", "en")
     end)
 end
+
+function Nesco:UnlockNapster()
+    local persistGameData = Isaac.GetPersistentGameData()
+    if persistGameData:Unlocked(napsterUnlockAchievement) then return end
+
+    local unlockRequirement = persistGameData:Unlocked(Achievement.GOLDEN_PENNY)
+        and persistGameData:Unlocked(Achievement.GOLDEN_HEARTS)
+        and persistGameData:Unlocked(Achievement.GOLDEN_BOMBS)
+        and persistGameData:Unlocked(Achievement.GOLDEN_PILLS)
+
+    if unlockRequirement then
+        persistGameData:TryUnlock(napsterUnlockAchievement, SHOULD_BLOCK_POPUP)
+    end
+end
+
+Nesco:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, Nesco.UnlockNapster)
 
 local willSpawn = true
 local damageCalcCalled = false
